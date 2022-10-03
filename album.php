@@ -15,7 +15,13 @@ if(isset($_POST['add_album'])){
 
 	$album_genre = trim($_POST['album_genre']);
 	$album_genre = filter_var($album_genre, FILTER_SANITIZE_STRING);
-	//echo "album genre is " . $album_genre;
+
+	$album_label = trim($_POST['album_label']);
+	$album_artist = trim($_POST['album_artist']);
+
+	$album_description = trim($_POST['album_description']);
+	$album_year = trim($_POST['album_year']);
+
 
 
 
@@ -31,7 +37,7 @@ if(isset($_POST['add_album'])){
 	}
 
 	if ($form_good == TRUE) {
-		$add_album->bind_param("si", $album_name, $album_genre);
+		$add_album->bind_param("siiisi", $album_name, $album_genre, $album_label, $album_artist, $album_description, $album_year);
 		$add_album->execute();
 		if($add_album-> error) {
 			$message = "Error: " . $add_album->error;
@@ -53,19 +59,13 @@ if(isset($_POST['add_album'])){
 		<?php while ($row = $get_result->fetch_assoc()) :  ?>
 			<?php  
 				extract($row);
-				$id = $row['album_id'];
 				$name = $row['name'];
 			?>
-			<div>
-				<h3><?php echo $name;  ?></h3>
-				<h3><?php echo $id;  ?></h3>
-			
-			</div>		
 		<?php  endwhile ?>
 <?php endif;  ?>
 
 <!-- FORM -->
-<form action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']) ?>" method="POST" class="form" enctype="multipart/form-data">
+<form action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']) ?>" method="POST" class="form" enctype="multipart/form-data" class="form">
 <?php
 		echo $message;
 	?>
@@ -90,7 +90,47 @@ if(isset($_POST['add_album'])){
 				<?php  endwhile ?>
 		<?php endif;  ?>
 	</select>
+		<!-- Add Label -->
+        <label for="album_label">Label</label>
+	<select name="album_label" id="">
+		<?php
+			$get_all_labels->execute();
+			$get_result = $get_all_labels->get_result();
+			if($get_result->num_rows>0) : ?>
+				<?php while ($row = $get_result->fetch_assoc()) :  ?>
+					<?php  
+						extract($row);
+						$label_id = $row['label_id'];
+						$name = $row['name'];
+					?>
+				<option value="<?php  echo $label_id ?>"><?php  echo $name ?></option>
+				<?php  endwhile ?>
+		<?php endif;  ?>
+	</select>
 
+	<!-- Add Artist -->
+	<label for="album_artist">Artist</label>
+	<select name="album_artist" id="">
+		<?php
+			$get_all_artists->execute();
+			$get_result = $get_all_artists->get_result();
+			if($get_result->num_rows>0) : ?>
+				<?php while ($row = $get_result->fetch_assoc()) :  ?>
+					<?php  
+						extract($row);
+						$artist_id = $row['artist_id'];
+						$name = $row['name'];
+					?>
+				<option value="<?php  echo $artist_id ?>"><?php  echo $name ?></option>
+				<?php  endwhile ?>
+		<?php endif;  ?>
+	</select>
+
+	<label for="album_description">Description</label>
+	<textarea name="album_description"></textarea>
+
+	<label for="album_year">Year</label>
+	<input type="text" name="album_year" id="album_year">
 		
 
    <input type="submit" value="Add album" name="add_album" id="add_album">

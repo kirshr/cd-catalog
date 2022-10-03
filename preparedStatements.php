@@ -4,8 +4,8 @@ $add_genre = $conn->prepare("INSERT INTO genre (name) VALUES (?)");
 $add_artist = $conn->prepare("INSERT INTO artist (name) VALUES (?)");
 $add_label = $conn->prepare("INSERT INTO label (name) VALUES (?)");
 $add_album = $conn->prepare
-            ("INSERT INTO album (name, genre_id) 
-            VALUES (?,?)");
+            ("INSERT INTO album (name, genre_id, label_id, artist_id, description, year) 
+            VALUES (?,?,?,?,?,?)");
 
 
 //READ

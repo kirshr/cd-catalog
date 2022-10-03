@@ -53,13 +53,8 @@ if(isset($_POST['add_label'])){
 				<h3><?php echo $name;  ?></h3>
 				<h3><?php echo $id;  ?></h3>
 			
-			</div>
-			
+			</div>		
 		<?php  endwhile ?>
-		
-		
-
-
 <?php endif;  ?>
 <div>
 	<h2>Our Labels</h2>
