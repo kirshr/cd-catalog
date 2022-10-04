@@ -1,10 +1,11 @@
 <?php 
 $pageTitle = "";
-$validation_album = $message = "";
+$validation_album = $message = $image = "";
 ?>
 <?php
 include ('inc/header.php');
 include ('./preparedStatements.php');
+include "./partials/image_functions.php"
 ?>
 <?php
 //SQL REQUESTS
@@ -22,11 +23,14 @@ if(isset($_POST['add_album'])){
 	$album_description = trim($_POST['album_description']);
 	$album_year = trim($_POST['album_year']);
 
+	$image = $_POST['image'];
+	echo $image;
+
 
 
 
 	$form_good = TRUE;
-
+	//VALIDATION
 	if ($album_name == "") {
 		$validation_album = "<p class='error'>album Cannot be Blank</p>";
 		$form_good = FALSE;          
@@ -36,8 +40,54 @@ if(isset($_POST['add_album'])){
 		$form_good = FALSE; 
 	}
 
+	//IMAGE VALIDATION
+	$file_name = $_FILES['image']['name'];
+	$file_size = $_FILES['image']['size'];
+	$type = $_FILES['image']['type'];
+	$temp_name = $_FILES['image']['tmp_name'];
+	$error = $_FILES['image']['error'];
+	
+	$file_ext = explode('.', $file_name);
+	$file_actual_ext = strtolower(end($file_ext));
+	if($file_size > 2097152){
+		$form_good = FALSE;
+		$messsage = "<p>Sorry, max size exceeded</p>";
+	}
+	 //Validation - Only valid file types
+	$allowed_file_types = array('image/jpeg','image/pjpeg','image/png','image/webp');
+	if($file_name) {
+		if(!in_array($type, $allowed_file_types)){
+			$form_good = FALSE;
+			$message = "<p>Sorry, only images allowed</p>";
+		}
+		if($error > 0){
+			$form_good = FALSE;
+			$message = "<p>There was a problem with the file</p>";
+		}   
+		$unique_file_name = uniqid('', true).".".$file_actual_ext;
+	}
+
+	 //Upload succesful message
+	if(move_uploaded_file($temp_name, "./uploaded_files/$unique_file_name")) {
+		//Resize images to thumbnails
+		switch ($file_actual_ext) {
+			case 'jpg':
+				resize_image("./uploaded_files/$unique_file_name", "./thumbs/", $type, 200);
+				resize_image("./uploaded_files/$unique_file_name", "./display/", $type, 1000);
+				break;
+			case 'webp':
+				resize_image_webp("./uploaded_files/$unique_file_name", "./thumbs/", $type, 200);
+				resize_image_webp("./uploaded_files/$unique_file_name", "./display/", $type, 1000);
+				break;
+			case 'png':
+				resize_image_png("./uploaded_files/$unique_file_name", "./thumbs/", $type, 200);
+				resize_image_png("./uploaded_files/$unique_file_name", "./display/", $type, 1000);
+		}
+	}
+
+	//IF VALIDATION IS GOOD, SEND SQL
 	if ($form_good == TRUE) {
-		$add_album->bind_param("siiisi", $album_name, $album_genre, $album_label, $album_artist, $album_description, $album_year);
+		$add_album->bind_param("siiisis", $album_name, $album_genre, $album_label, $album_artist, $album_description, $album_year, $unique_file_name);
 		$add_album->execute();
 		if($add_album-> error) {
 			$message = "Error: " . $add_album->error;
@@ -65,7 +115,8 @@ if(isset($_POST['add_album'])){
 <?php endif;  ?>
 
 <!-- FORM -->
-<form action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']) ?>" method="POST" class="form" enctype="multipart/form-data" class="form">
+<div class="inner-container form-container">
+<form action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']) ?>" method="POST" class="form" enctype="multipart/form-data" class="form form-album">
 <?php
 		echo $message;
 	?>
@@ -131,8 +182,13 @@ if(isset($_POST['add_album'])){
 
 	<label for="album_year">Year</label>
 	<input type="text" name="album_year" id="album_year">
+
+	<label for="image">Upload Image</label>
+    <input type="file" name="image" id="image">
 		
 
    <input type="submit" value="Add album" name="add_album" id="add_album">
 </form>
+</div>
+
 

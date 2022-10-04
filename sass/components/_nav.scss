@@ -1,0 +1,26 @@
+header {
+  position: relative;
+  background-color: rgb(37, 37, 37);
+  nav {
+    position: sticky;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    a {
+      color: whitesmoke;
+      text-transform: uppercase;
+    }
+    ul {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      li {
+        list-style: none;
+        a {
+          color: whitesmoke;
+          text-transform: uppercase;
+        }
+      }
+    }
+  }
+}

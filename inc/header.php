@@ -17,8 +17,8 @@ require "connect.php";
   <link rel="apple-touch-icon" href="icon.png">
   <!-- Place favicon.ico in the root directory -->
 
-  <link rel="stylesheet" href="<?php echo BASE_URL ?>css/normalize.css">
-  <link rel="stylesheet" href="<?php echo BASE_URL ?>css/main.css">
+  <link rel="stylesheet" href="<?php echo BASE_URL ?>sass/styles.css">
+
 </head>
 
 <body>
@@ -26,8 +26,8 @@ require "connect.php";
     <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
   <![endif]-->
   <header>
-    <a class="" href="<?php echo BASE_URL ?>index.php">CD Catalog</a>
-    <nav>
+    <nav class="inner-container">
+      <a class="" href="<?php echo BASE_URL ?>index.php">CD Catalog</a>
       <ul>
         <li><a href="<?php echo BASE_URL ?>artist.php">Artists</a></li>
         <li><a href="<?php echo BASE_URL ?>label.php">Labels</a></li>

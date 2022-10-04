@@ -1,0 +1,20 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 40rem;
+  border: 2px solid black;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  input,
+  select,
+  textarea {
+    margin-bottom: 0.9rem;
+  }
+}
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 94vh;
+}
