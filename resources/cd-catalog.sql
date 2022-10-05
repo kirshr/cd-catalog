@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 03, 2022 at 09:18 PM
+-- Generation Time: Oct 05, 2022 at 02:56 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.1
 
@@ -34,8 +34,17 @@ CREATE TABLE `album` (
   `genre_id` int(11) NOT NULL,
   `year` int(4) NOT NULL,
   `artist_id` int(11) NOT NULL,
-  `label_id` int(11) NOT NULL
+  `label_id` int(11) NOT NULL,
+  `image` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `album`
+--
+
+INSERT INTO `album` (`album_id`, `name`, `description`, `genre_id`, `year`, `artist_id`, `label_id`, `image`) VALUES
+(9, 'Fallen', 'asdas', 14, 2003, 4, 5, '633c50741c5e16.60579332.png'),
+(10, 'Hybrid Theory', 'Hybrid Theory is the debut studio album by American rock band Linkin Park, released on October 24, 2000, through Warner Bros. Records. Recorded at NRG Recordings in North Hollywood, California, and produced by Don Gilmore, the album\\\'s lyrical themes deal with problems lead vocalist Chester Bennington experienced during his adolescence, including drug abuse and the constant fighting and divorce of his parents. Hybrid Theory takes its title from the previous name of the band as well as the concept of music theory and combining different styles. This is also the only album on which bassist Dave Farrell does not play.', 21, 2000, 13, 12, '633c55702ab824.15235588.jpg');
 
 -- --------------------------------------------------------
 
@@ -53,9 +62,16 @@ CREATE TABLE `artist` (
 --
 
 INSERT INTO `artist` (`artist_id`, `name`) VALUES
-(1, 'Jennifer Lopes'),
-(2, 'Michael Buble'),
-(3, 'Shania Twain');
+(4, 'Fuel'),
+(5, 'Soundgarden'),
+(6, 'Angelique Kidjo'),
+(7, 'Brittany Spears'),
+(8, 'Pearl Jam'),
+(9, 'Dave Matthews Band'),
+(10, 'Led Zeppelin'),
+(11, 'Alice In Chains'),
+(12, 'Evanescence'),
+(13, 'Linkin Park');
 
 -- --------------------------------------------------------
 
@@ -92,7 +108,7 @@ INSERT INTO `cd_catalog_class` (`artist`, `title`, `year`, `genre`, `artwork`, `
 ('Dave Matthews Band', 'Everyday', 2001, 'Rock', 'DaveMatthewsBandEveryday.jpg', 'RCA', 'Once again, this album debuted at #1 and has sold over 3 million copies to date.', '', 10),
 ('Stone Temple Pilots ', 'Core', 1992, 'Alternative Rock', 'Stonetemplepilotscore.jpg', 'Atlantic', 'Perhaps this California grunge band\'s definitive release, it charted well with tracks such as Plush and Creep.\r\n\r\n', '', 11),
 ('Stone Temple Pilots', 'Tiny Music... Songs from the Vatican Gift Shop', 1996, 'Alternative Rock', 'Stonetemplepilotstinymusic.jpg', 'Atlantic', 'Considered a bit of a departure musically for this group, many tracks took inspiration from the Beatles and other retro-influences.', '', 12),
-('Alice in Chains', 'Dirt', 1992, 'Rock', 'AliceinChainsDirt.jpg', 'Columbia', 'This Seattle band\'s breakthrough album and perhaps their best.\r\n\r\nLayne Staley and Jerry Cantrell had met at a party in 1987 and the band was formed.', '', 13),
+('Alice in Chains', 'Dirt', 1992, 'Rock', 'AliceinChainsDirt.jpg', 'Columbia', 'This Seattle band\'s breakthrough album and perhaps their best.\n\nLayne Staley and Jerry Cantrell had met at a party in 1987 and the band was formed.', '', 13),
 ('Teletubbies', 'Teletubbies Say Eh-Oh! ', 1997, 'pop', 'Teletubbies-Say-Eh-Oh.jpg', 'BBC Worldwide', 'A single released from this groundbreaking vocal band, it broke down artistic barriers and ventured into uncharted waters stylistically. \r\n\r\nBlah, blah, blah.', '', 14),
 ('Lenny Kravitz', 'Mama Said', 1991, 'Rock', 'Lenny_Kravitz-Mama_Said.jpg', 'Virgin', 'Lenny\'s 2nd album, it featured Always on the Run cowritten by G & R\'s Slash.', '', 15),
 ('Lenny Kravitz', 'Are You Gonna Go My Way', 1993, 'Rock', 'Lenny_Kravitz_Go_My_Way.jpg', 'Virgin', 'Considered by many as his best work. Showed Kravitz\'s significant 70\'s influence.', '', 16),
@@ -134,8 +150,14 @@ CREATE TABLE `genre` (
 --
 
 INSERT INTO `genre` (`genre_id`, `name`) VALUES
-(12, 'Rap'),
-(13, 'Jaz');
+(14, 'Alternative Rock'),
+(15, 'World'),
+(16, 'Pop'),
+(17, 'Jazz'),
+(18, 'Blues'),
+(19, 'Punk'),
+(20, 'Rock'),
+(21, 'Alternative Metal');
 
 -- --------------------------------------------------------
 
@@ -153,10 +175,14 @@ CREATE TABLE `label` (
 --
 
 INSERT INTO `label` (`label_id`, `name`) VALUES
-(1, 'Red Band'),
-(2, 'Kiran\\&#39;s Label'),
-(3, 'Blue Band'),
-(4, 'Purple Band');
+(5, 'Epic Records'),
+(6, 'A & M'),
+(7, 'Jive'),
+(8, 'Epic'),
+(9, 'RCA'),
+(10, 'Atlantic'),
+(11, 'Wind-up Records'),
+(12, 'Warner Records');
 
 --
 -- Indexes for dumped tables
@@ -166,6 +192,7 @@ INSERT INTO `label` (`label_id`, `name`) VALUES
 -- Indexes for table `album`
 --
 ALTER TABLE `album`
+  ADD PRIMARY KEY (`album_id`),
   ADD KEY `album_ibfk_1` (`genre_id`),
   ADD KEY `album_ibfk_2` (`label_id`),
   ADD KEY `album_ibfk_3` (`artist_id`);
@@ -199,10 +226,16 @@ ALTER TABLE `label`
 --
 
 --
+-- AUTO_INCREMENT for table `album`
+--
+ALTER TABLE `album`
+  MODIFY `album_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
 -- AUTO_INCREMENT for table `artist`
 --
 ALTER TABLE `artist`
-  MODIFY `artist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `artist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `cd_catalog_class`
@@ -214,13 +247,13 @@ ALTER TABLE `cd_catalog_class`
 -- AUTO_INCREMENT for table `genre`
 --
 ALTER TABLE `genre`
-  MODIFY `genre_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `genre_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `label`
 --
 ALTER TABLE `label`
-  MODIFY `label_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `label_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables
